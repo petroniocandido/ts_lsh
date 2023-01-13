@@ -29,6 +29,9 @@ class LSH(object):
     else:
       if self.activation == "exp":
         return np.exp(self._hashfunction(input, **kwargs))
+      elif self.activation == "scale":
+        factor = kwargs.get('factor', np.pi)
+        return self._hashfunction(input, **kwargs) * factor
       else:
         return self._hashfunction(input, **kwargs)
 

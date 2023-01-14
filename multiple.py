@@ -7,7 +7,13 @@ class MultipleLSH(LSH):
     
     self.num : int = kwargs.get("number",2)
 
-    self.hashes = [SignedRandomProjectionLSH(**kwargs) for k in range(self.num)]
+    scale = kwargs.get("scale", 1.0)
+
+    dist = kwargs.get('dist','normal')
+    if dist == 'normal':
+      self.weights = np.random.randn(self.num, self.length) * scale
+    elif dist == 'unif':
+      self.weights = (np.random.rand(self.num, self.length) * 2 * scale) - scale
 
   def _hashfunction(self, input : np.array, **kwargs):
-    return [lsh.hash(input) for lsh in self.hashes]
+    return np.dot(self.weights, input)

@@ -4,8 +4,6 @@ from ts-lsh.common import owa, get_owa_weights
 class EnsembleLSH(MultipleLSH):
   def __init__(self, **kwargs):
     super(EnsembleLSH, self).__init__(**kwargs)
-    
-    self.aggregation = kwargs.get("aggregation", "mean")
 
     self.aggregation = kwargs.get("aggregation", "srp")
 

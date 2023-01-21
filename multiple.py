@@ -7,13 +7,12 @@ class MultipleLSH(LSH):
     
     self.num : int = kwargs.get("number",2)
 
-    scale = kwargs.get("scale", 1.0)
-
-    dist = kwargs.get('dist','normal')
-    if dist == 'normal':
-      self.weights = np.random.randn(self.num, self.length) * scale
-    elif dist == 'unif':
-      self.weights = (np.random.rand(self.num, self.length) * 2 * scale) - scale
+    self.scale = kwargs.get("scale", 1.0)
+    self.dist = kwargs.get('dist','normal')
+    if self.dist == 'normal':
+      self.weights = np.random.randn(self.num, self.length) * self.scale
+    elif self.dist == 'unif':
+      self.weights = (np.random.rand(self.num, self.length) * 2 * self.scale) - self.scale
 
   def _hashfunction(self, input : np.array, **kwargs):
     return np.dot(self.weights, input)

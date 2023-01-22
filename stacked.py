@@ -7,7 +7,8 @@ class StackedLSH(LSH):
     self.layers = []
 
   def append(self, length, **kwargs):
-    self.layers.append(SignedRandomProjectionLSH(length=length, **kwargs))
+    _type = kwargs.get("type", SignedRandomProjectionLSH)
+    self.layers.append(_type(length=length, **kwargs))
 
   def _hashfunction(self, input : np.array):
     if input.shape[1] != self.length:

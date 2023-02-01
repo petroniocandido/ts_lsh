@@ -6,26 +6,26 @@
 
 ```mermaid
 classDiagram
-LSH : name
-LSH : lenght
-LSH : hashtype
-LSH : width
-LSH : activation
-LSH : hash()
-LSH : _hashfunction()
-LSH <|-- SignedRandomProjectionLSH
-SignedRandomProjectionLSH : dist
-SignedRandomProjectionLSH : scale
-SignedRandomProjectionLSH : weights
-LSH <|-- MultipleLSH
-MultipleLSH : num
-MultipleLSH : scale
-MultipleLSH : dist
-MultipleLSH : weights
-MultipleLSH <|-- EnsembleLSH
-EnsembleLSH : aggregation
-EnsembleLSH : aggregation_weights
-LSH <|-- StackedLSH
-StackedLSH : layers
-StackedLSH : append()
+    LSH : name
+    LSH : length
+    LSH : hashtype
+    LSH : width
+    LSH : activation
+    LSH : hash()
+    LSH : _hashfunction()
+    LSH <|-- SignedRandomProjectionLSH
+    SignedRandomProjectionLSH : dist
+    SignedRandomProjectionLSH : scale
+    SignedRandomProjectionLSH : weights
+    LSH <|-- MultipleLSH
+    MultipleLSH : num
+    MultipleLSH : scale
+    MultipleLSH : dist
+    MultipleLSH : weights
+    MultipleLSH <|-- EnsembleLSH
+    EnsembleLSH : aggregation
+    EnsembleLSH : aggregation_weights
+    LSH <|-- StackedLSH
+    StackedLSH : layers
+    StackedLSH : append()
 ```

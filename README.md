@@ -19,11 +19,13 @@ sequenceDiagram
 
 ```mermaid
 classDiagram
-    LSH : name
-    LSH : length
-    LSH : hashtype
-    LSH : width
-    LSH : activation
+    LSH: name
+    LSH: length
+    LSH: hashtype
+    LSH: width
+```
+
+LSH : activation
     LSH : hash()
     LSH : _hashfunction()
     LSH <|-- SignedRandomProjectionLSH
@@ -41,4 +43,3 @@ classDiagram
     LSH <|-- StackedLSH
     StackedLSH : layers
     StackedLSH : append()
-```

@@ -4,3 +4,28 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/ansicolortags.svg)](https://pypi.python.org/pypi/pyFTS/)
 
+```mermaid
+classDiagram
+LSH : name
+LSH : lenght
+LSH : hashtype
+LSH : width
+LSH : activation
+LSH : hash()
+LSH : _hashfunction()
+LSH <|-- SignedRandomProjectionLSH
+SignedRandomProjectionLSH : dist
+SignedRandomProjectionLSH : scale
+SignedRandomProjectionLSH : weights
+LSH <|-- MultipleLSH
+MultipleLSH : num
+MultipleLSH : scale
+MultipleLSH : dist
+MultipleLSH : weights
+MultipleLSH <|-- EnsembleLSH
+EnsembleLSH : aggregation
+EnsembleLSH : aggregation_weights
+LSH <|-- StackedLSH
+StackedLSH : layers
+StackedLSH : append()
+```

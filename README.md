@@ -6,7 +6,7 @@
 
 ```mermaid
 classDiagram
-Class01 <|-- AveryLongClass : Cool
+LSH <|-- AveryLongClass : Cool
 Class03 *-- Class04
 Class05 o-- Class06
 Class07 .. Class08

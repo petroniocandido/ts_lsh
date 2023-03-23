@@ -1,3 +1,4 @@
+import numpy as np
 from ts_lsh.common import sigmoid
 
 class LSH(object):

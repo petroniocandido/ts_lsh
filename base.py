@@ -1,4 +1,4 @@
-from ts-lsh.common import sigmoid
+from ts_lsh.common import sigmoid
 
 class LSH(object):
   

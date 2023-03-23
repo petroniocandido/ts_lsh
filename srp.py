@@ -1,4 +1,4 @@
-from ts-lsh.base import LSH
+from ts_lsh.base import LSH
 
 class SignedRandomProjectionLSH(LSH):
   def __init__(self, **kwargs):

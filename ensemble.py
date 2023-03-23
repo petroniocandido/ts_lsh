@@ -1,5 +1,5 @@
-from ts-lsh.multiple import MultipleLSH
-from ts-lsh.common import owa, get_owa_weights
+from ts_lsh.multiple import MultipleLSH
+from ts_lsh.common import owa, get_owa_weights
 
 class EnsembleLSH(MultipleLSH):
   def __init__(self, **kwargs):

@@ -1,5 +1,5 @@
-from ts-lsh.base import LSH
-from ts-lsh.srp import SignedRandomProjectionLSH
+from ts_lsh.base import LSH
+from ts_lsh.srp import SignedRandomProjectionLSH
 
 class StackedLSH(LSH):
   def __init__(self, **kwargs):

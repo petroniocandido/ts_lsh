@@ -12,8 +12,8 @@ def normalization(data : np.array ) -> np.array :
     values = data[:,col]
     _avg = np.mean(values)
     _std = np.std(values)
-    values -= _avg
-    values /= _std
+    values = values - _avg
+    values = values / _std
     new[:, col] = values
 
   return new
@@ -27,8 +27,8 @@ def standardization(data : np.array) -> np.array :
     _min = np.min(values)
     _max = np.max(values)
     rng = _max - _min
-    values -= _min
-    values /= rng
+    values = values - _min
+    values = values / rng
     new[:, col] = values
 
   return new

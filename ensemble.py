@@ -1,3 +1,4 @@
+import numpy as np
 from ts_lsh.multiple import MultipleLSH
 from ts_lsh.common import owa, get_owa_weights
 

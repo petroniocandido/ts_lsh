@@ -1,3 +1,4 @@
+import numpy as np
 from ts_lsh.base import LSH
 
 class SignedRandomProjectionLSH(LSH):

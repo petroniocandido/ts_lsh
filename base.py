@@ -1,40 +1,31 @@
 import numpy as np
-from ts_lsh.common import sigmoid
+from ts_lsh.base import LSH
+from ts_lsh.srp import SignedRandomProjectionLSH
 
-class LSH(object):
-  
+class StackedLSH(LSH):
   def __init__(self, **kwargs):
-    self.name : str = kwargs.get("name","LSH")
-    self.length : int = kwargs.get("length",0)
-    self.hashtype : str = kwargs.get("hashtype","real")
-    self.width : int = kwargs.get("width",None)
-    self.activation : str = kwargs.get("activation", "sign")
+    super(StackedLSH, self).__init__(**kwargs)
+    self.layers = []
 
-    if self.hashtype == "binary":
-      self.nbins = 2
-    
-    if self.hashtype == "integer":
-      if self.width is None:
-        raise Exception("The parameter width must be informed!")
+  def append(self, length, **kwargs):
+    _type = kwargs.get("type", SignedRandomProjectionLSH)
+    self.layers.append(_type(**kwargs))
 
-      self.b = np.random.randint(0, self.width, 1)
-
-  def hash(self, input : np.array, **kwargs):
-    if self.hashtype == "binary":
-      if self.activation == "sign":
-        return 1 if self._hashfunction(input, **kwargs) > 0 else 0
-      elif self.activation == "sigmoid":
-        return sigmoid(self._hashfunction(input, **kwargs))
-    elif self.hashtype == "integer":
-      return np.round((self._hashfunction(input, **kwargs) + self.b)/self.width, 0)
-    else:
-      if self.activation == "exp":
-        return np.exp(self._hashfunction(input, **kwargs))
-      elif self.activation == "scale":
-        factor = kwargs.get('factor', np.pi)
-        return self._hashfunction(input, **kwargs) * factor
+  def _hashfunction(self, input : np.array):
+    if input.shape[1] != self.input_length:
+      raise Exception("Array dimensions don't match")
+    old = input
+    for ct, layer in enumerate(self.layers):
+      if ct == 0:
+        new = np.array([layer.hash(item) for item in old])
       else:
-        return self._hashfunction(input, **kwargs)
-
-  def _hashfunction(self, input : np.array, **kwargs):
-    pass  
+        n = len(old)
+        d = self.layers[ct-1].output_length
+        if self.layers[ct-1].output_length != layer.input_length:
+			new = np.array([layer.hash(old[k - layer.input_length : k]) for k in range(layer.input_length,n, layer.input_length)])
+		else:
+			new = np.array([layer.hash(k) for k in old])
+      if layer.output_length == 1:
+		new = new.flatten()
+      old = new
+    return old

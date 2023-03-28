@@ -25,6 +25,6 @@ class StackedLSH(LSH):
         else:
           new = np.array([layer.hash(k) for k in old])
       if layer.output_length == 1:
-		    new = new.flatten()
+        new = new.flatten()
       old = new
     return old

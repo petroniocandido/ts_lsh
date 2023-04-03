@@ -6,6 +6,7 @@ class StackedLSH(LSH):
   def __init__(self, **kwargs):
     super(StackedLSH, self).__init__(**kwargs)
     self.layers = []
+    self.batch = True
 
   def append(self, length, **kwargs):
     _type = kwargs.get("type", SignedRandomProjectionLSH)

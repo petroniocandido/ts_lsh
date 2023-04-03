@@ -4,6 +4,7 @@ from ts_lsh.common import sigmoid
 class LSH(object):
   
   def __init__(self, **kwargs):
+    self.batch : bool = kwargs.get("batch", False)
     self.name : str = kwargs.get("name","LSH")
     self.input_length : int = kwargs.get("input_length",0)
     self.output_length : int = kwargs.get("output_length",1)

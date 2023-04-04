@@ -5,6 +5,8 @@ from ts_lsh.common import owa, get_owa_weights
 class EnsembleLSH(MultipleLSH):
   def __init__(self, **kwargs):
     super(EnsembleLSH, self).__init__(**kwargs)
+    
+    self.output_length = 1
 
     self.aggregation = kwargs.get("aggregation", "srp")
 
@@ -15,9 +17,9 @@ class EnsembleLSH(MultipleLSH):
 
       self.dist = kwargs.get('dist','normal')
       if self.dist == 'normal':
-        self.aggregation_weights = np.random.randn(self.output_length) * self.scale
+        self.aggregation_weights = np.random.randn(self.num_components) * self.scale
       elif self.dist == 'unif':
-        self.aggregation_weights = (np.random.rand(self.output_length) * 2 * self.scale) - self.scale
+        self.aggregation_weights = (np.random.rand(self.num_components) * 2 * self.scale) - self.scale
 
   def _hashfunction(self, input : np.array, **kwargs):
     hashes = super(EnsembleLSH, self)._hashfunction(input)
@@ -36,6 +38,8 @@ class EnsembleLSH(MultipleLSH):
 class RandomSampleEnsembleLSH(MultipleRandomSampledLSH):
   def __init__(self, **kwargs):
     super(RandomSampleEnsembleLSH, self).__init__(**kwargs)
+    
+    self.output_length = 1
 
     self.aggregation = kwargs.get("aggregation", "srp")
 
@@ -46,9 +50,9 @@ class RandomSampleEnsembleLSH(MultipleRandomSampledLSH):
 
       self.dist = kwargs.get('dist','normal')
       if self.dist == 'normal':
-        self.aggregation_weights = np.random.randn(self.output_length) * self.scale
+        self.aggregation_weights = np.random.randn(self.num_components) * self.scale
       elif self.dist == 'unif':
-        self.aggregation_weights = (np.random.rand(self.output_length) * 2 * self.scale) - self.scale
+        self.aggregation_weights = (np.random.rand(self.num_components) * 2 * self.scale) - self.scale
 
   def _hashfunction(self, input : np.array, **kwargs):
     hashes = super(RandomSampleEnsembleLSH, self)._hashfunction(input)

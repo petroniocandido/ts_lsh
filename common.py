@@ -4,6 +4,32 @@ import numpy as np
 def sigmoid(x):
   return 1/(1 + np.exp(-x))
 
+def euclidean(a : np.array, b : np.array):
+  return np.sqrt(np.sum((a-b)**2))
+
+def distance_matrix(data : np.array, fn_distance) -> np.array:
+  if len(data.shape) > 1:
+    l,_ = data.shape 
+  else:
+    l = data.shape[0] 
+  matrix = np.zeros((l,l))
+  for i in range(l):
+    for j in range(i+1,l):
+      d = fn_distance(data[i,],data[j,])
+      matrix[i,j] = d
+      matrix[j,i] = d
+  return matrix
+
+def matrix_histogram(mat : np.array, nbins : int):
+  m = np.min(mat[~np.eye(mat.shape[0],dtype=bool)]) # all elements except the diagonal
+  M = np.max(mat)
+  bins = np.linspace(m,M,nbins)
+  freq, bins = np.histogram(mat, bins=bins)
+  freq = freq.astype(np.float64)
+  freq /= np.float64(2.)
+  freq /= np.sum(freq)
+  return bins, freq
+
 def normalization(data : np.array ) -> np.array :
   rows, cols = data.shape
   new = np.zeros((rows,cols))

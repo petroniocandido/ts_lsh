@@ -17,7 +17,7 @@ def hist_global(mat, nbins=20):
   ax.set_title("Distance Distribution")
 
 
-def original_vs_hash(dataset : np.array, lsh, fn_distance = euclidian, nbins=20):
+def original_vs_hash(dataset : np.array, lsh, fn_distance = euclidean, nbins=20):
   if not lsh.batch:
     hash = np.array([lsh.hash(k) for k in dataset])
   else:
@@ -44,7 +44,7 @@ def original_vs_hash(dataset : np.array, lsh, fn_distance = euclidian, nbins=20)
   ax_dist[1].bar(bins_hash[:-1], freq_hash)
   ax_dist[1].set_title("Embedding Distance Distribution")
 
-def compare_distributions(dataset : np.array, lsh, fn_distance = euclidian, nbins=20):
+def compare_distributions(dataset : np.array, lsh, fn_distance = euclidean, nbins=20):
   if not lsh.batch:
     hash = np.array([lsh.hash(k) for k in dataset])
   else:

@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from ts_lsh.common import euclidean, distance_matrix, matrix_histogram
 
 def hist_global(mat, nbins=20):

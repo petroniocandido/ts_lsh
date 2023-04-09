@@ -21,12 +21,12 @@ def distance_distribution(mat, nbins=20):
 def data_vs_hash_distance_distribution(**kwargs):
   mat : np.array = kwargs.get('mat', None)
   mat_hash : np.array = kwargs.get('mat_hash', None)
+  nbins : int = kwargs.get('nbins', 20)
   
   if mat is None and mat_hash is None:
     dataset : np.array = kwargs.get('dataset',None)
     lsh = kwargs.get('lsh',None)
     fn_distance = kwargs.get('fn_distance', euclidean)
-    nbins = kwargs.get('nbins', 20)
     mat, mat_hash = data_vs_hash_distance_matrices(dataset, lsh, fn_distance, nbins)
   
   fig = plt.figure(layout='constrained', figsize=(10, 5))
@@ -53,13 +53,16 @@ def data_vs_hash_distance_distribution(**kwargs):
 def conditional_distance_distribution(dataset : np.array, lsh, fn_distance = euclidean, nbins=20, mat=None, mat_hash=None):
   mat : np.array = kwargs.get('mat', None)
   mat_hash : np.array = kwargs.get('mat_hash', None)
+  nbins : int = kwargs.get('nbins', 20)
   
   if mat is None and mat_hash is None:
     dataset : np.array = kwargs.get('dataset',None)
     lsh = kwargs.get('lsh',None)
     fn_distance = kwargs.get('fn_distance', euclidean)
-    nbins = kwargs.get('nbins', 20)
     mat, mat_hash = data_vs_hash_distance_matrices(dataset, lsh, fn_distance, nbins)
+  
+  fig = plt.figure(layout='constrained', figsize=(10, 5))
+  subfigs = fig.subfigures(1, 2, wspace=0.07)
   
   bins, freqs = matrix_histogram(mat, nbins)
 

@@ -47,7 +47,6 @@ def data_vs_hash_distance_distribution(**kwargs):
   bins_hash, freq_hash = matrix_histogram(mat_hash, nbins)
   ax_dist[1].bar(bins_hash[:-1], freq_hash)
   ax_dist[1].set_title("Embedding Distance Distribution")
-  return mat, math_hash
 
 
 def conditional_distance_distribution(dataset : np.array, lsh, fn_distance = euclidean, nbins=20, mat=None, mat_hash=None):

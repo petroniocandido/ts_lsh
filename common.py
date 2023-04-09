@@ -30,6 +30,25 @@ def matrix_histogram(mat : np.array, nbins : int):
   freq /= np.sum(freq)
   return bins, freq
 
+def data_vs_hash_distance_matrices(dataset : np.array, lsh, fn_distance = euclidean, nbins=20):
+  if not lsh.batch:
+    hash = np.array([lsh.hash(k) for k in dataset])
+  else:
+    hash = lsh.hash(dataset)
+  mat = distance_matrix(dataset, fn_distance)
+  mat_hash = distance_matrix(hash, fn_distance)
+  return mat, mat_hash
+
+def DKL(mat : np.array, mat_hash : np.array, nbin=20):
+
+  bins_d, freqs_d = matrix_histogram(mat, nbins)
+  bins_h, freqs_h = matrix_histogram(mat_hash, nbins)
+
+  return np.sum([(pd * np.log(1/ph)) - (pd * np.log(1/pd)) \
+                 for pd, ph in zip(freqs_d, freqs_h) \
+                 if pd > 0 and ph > 0])
+
+
 def normalization(data : np.array ) -> np.array :
   rows, cols = data.shape
   new = np.zeros((rows,cols))

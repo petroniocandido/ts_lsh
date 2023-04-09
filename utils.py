@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from ts_lsh.common import euclidean, distance_matrix, matrix_histogram
+from ts_lsh.common import euclidean, distance_matrix, matrix_histogram, data_vs_hash_distance_matrices
 
 def distance_distribution(mat, nbins=20):
   fig = plt.figure(layout='constrained', figsize=(15, 5))
@@ -17,16 +17,7 @@ def distance_distribution(mat, nbins=20):
   ax.bar(bins[:-1], freq)
   ax.set_title("Distance Distribution")
 
-def data_vs_hash_distance_matrices(dataset : np.array, lsh, fn_distance = euclidean, nbins=20):
-  if not lsh.batch:
-    hash = np.array([lsh.hash(k) for k in dataset])
-  else:
-    hash = lsh.hash(dataset)
-  mat = distance_matrix(dataset, fn_distance)
-  mat_hash = distance_matrix(hash, fn_distance)
-  return mat, mat_hash
-
-
+  
 def data_vs_hash_distance_distribution(dataset : np.array, lsh, fn_distance = euclidean, nbins=20, mat=None, mat_hash=None):
   
   if mat is None and mat_hash is None:
@@ -51,6 +42,7 @@ def data_vs_hash_distance_distribution(dataset : np.array, lsh, fn_distance = eu
   ax_dist[1].bar(bins_hash[:-1], freq_hash)
   ax_dist[1].set_title("Embedding Distance Distribution")
   return mat, math_hash
+
 
 def conditional_distance_distribution(dataset : np.array, lsh, fn_distance = euclidean, nbins=20, mat=None, mat_hash=None):
   if mat is None and mat_hash is None:

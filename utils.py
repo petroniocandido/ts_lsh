@@ -49,7 +49,7 @@ def data_vs_hash_distance_distribution(**kwargs):
   ax_dist[1].set_title("Embedding Distance Distribution")
 
 
-def conditional_distance_distribution(dataset : np.array, lsh, fn_distance = euclidean, nbins=20, mat=None, mat_hash=None):
+def conditional_distance_distribution(**kwargs):
   mat : np.array = kwargs.get('mat', None)
   mat_hash : np.array = kwargs.get('mat_hash', None)
   nbins : int = kwargs.get('nbins', 20)

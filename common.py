@@ -39,7 +39,7 @@ def data_vs_hash_distance_matrices(dataset : np.array, lsh, fn_distance = euclid
   mat_hash = distance_matrix(hash, fn_distance)
   return mat, mat_hash
 
-def DKL(mat : np.array, mat_hash : np.array, nbin=20):
+def DKL(mat : np.array, mat_hash : np.array, nbins=20):
 
   bins_d, freqs_d = matrix_histogram(mat, nbins)
   bins_h, freqs_h = matrix_histogram(mat_hash, nbins)

@@ -45,7 +45,7 @@ class SignedRandomProjectionLSH(LSH):
     return input @ self.weights
 
 
-  class MultipleLSH(LSH):
+class MultipleLSH(LSH):
   def __init__(self, **kwargs):
     super(MultipleLSH, self).__init__(**kwargs) 
     

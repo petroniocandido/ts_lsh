@@ -42,7 +42,7 @@ class SignedRandomProjectionLSH(LSH):
       self.weights = nn.Parameter((torch.rand(self.input_length) * (scale * 2)) - scale, requires_grad=False)
 
   def forward(self, input):
-    return torch.dot(self.weights, input)
+    return input @ self.weights
 
 
   class MultipleLSH(LSH):
@@ -60,7 +60,10 @@ class SignedRandomProjectionLSH(LSH):
       self.weights = nn.Parameter((torch.rand(self.num_components, self.input_length) * (self.scale * 2)) - self.scale, requires_grad=False)
 
   def forward(self, input):
-    return np.dot(self.weights, input)
+    ret = torch.zeros((len(input), self.output_length))
+    for k in range(self.output_length):
+      ret[:,k] =  input @ self.weights[k,:]
+    return ret 
 
   
 class MultipleRandomSampledLSH(LSH):
@@ -84,10 +87,42 @@ class MultipleRandomSampledLSH(LSH):
       self.sample_indexes.append( [int(k) for k in np.random.choice(self.input_length, self.sample_size, replace = False)] )
 
   def forward(self, input):
-    ret = torch.zeros(self.num_components)
+    ret = torch.zeros((len(input), self.num_components))
     for k in range(self.num_components):
-      i = input[[self.sample_indexes[k]]]
-      ret[k] = torch.dot(self.weights[k,:], i)
+      i = input[:,self.sample_indexes[k]]
+      ret[:,k] = i @ self.weights[k,:]
     return ret
   
+  
+class SequentialLSH(LSH):
+  
+  def __init__(self, *args : LSH):
+    super().__init__()
+
+    for idx, module in enumerate(args):
+      self.add_module(str(idx), module)
+      if idx == 0:
+        self.input_length = module.input_length
+      self.output_length = module.output_length
+
+  def forward(self, input):
+    old = input
+    for key, layer in self._modules.items():
+      ct = int(key)
+      if ct == 0:
+        new = layer.forward(old) 
+      else:
+        n = len(old)
+        if self._modules[str(ct-1)].output_length != layer.input_length:
+          _nn = n // layer.input_length
+          new = torch.zeros((_nn, layer.output_length))
+          for k in range(1, _nn):
+            ix = k * layer.input_length
+            new[k, :] = layer.forward(old[ix - layer.input_length : ix])
+        else:
+          new = layer.forward(old)
+      if layer.output_length == 1:
+        new = new.flatten()
+      old = new
+    return old
   

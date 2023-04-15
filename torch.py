@@ -60,8 +60,8 @@ class MultipleLSH(LSH):
       self.weights = nn.Parameter((torch.rand(self.num_components, self.input_length) * (self.scale * 2)) - self.scale, requires_grad=False)
 
   def forward(self, input):
-    ret = torch.zeros((len(input), self.output_length))
-    for k in range(self.output_length):
+    ret = torch.zeros((len(input), self.num_components))
+    for k in range(self.num_components):
       ret[:,k] =  input @ self.weights[k,:]
     return ret 
 

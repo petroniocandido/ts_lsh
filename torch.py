@@ -92,8 +92,82 @@ class MultipleRandomSampledLSH(LSH):
       i = input[:,self.sample_indexes[k]]
       ret[:,k] = i @ self.weights[k,:]
     return ret
+ 
+
+class EnsembleLSH(MultipleLSH):
+  def __init__(self, **kwargs):
+    super(EnsembleLSH, self).__init__(**kwargs)
+    
+    self.output_length = 1
+
+    self.aggregation : str = kwargs.get("aggregation", "srp")
+
+    self.aggregation_weights = kwargs.get("aggregation_weights",None)
+
+    if not self.aggregation_weights is None:
+      self.aggregation = "custom"
+
+    if self.aggregation == "custom":
+      self.aggregation_fn = lambda x : x @ self.aggregation_weights
+    elif self.aggregation == "srp":   
+      self.scale = kwargs.get("scale", 1.0)
+      self.dist = kwargs.get('dist','unif')
+      if self.dist == 'normal':
+        self.aggregation_weights = nn.Parameter(torch.randn(self.num_components) * self.scale, requires_grad=False)
+      elif self.dist == 'unif':
+        self.aggregation_weights = nn.Parameter((torch.rand(self.num_components) * (self.scale * 2)) - self.scale, requires_grad=False)
+      self.aggregation_fn = lambda x : x @ self.aggregation_weights
+    elif self.aggregation == "mean":
+      self.aggregation_fn = lambda x : torch.mean(x, dim=1)
+    elif self.aggregation == "max":
+      self.aggregation_fn = lambda x : torch.max(x, dim=1)
+    elif self.aggregation == "min":
+      self.aggregation_fn = lambda x : torch.min(x, dim=1)
+    else:
+      raise Exception("Unknown aggregation")
+
+  def forward(self, input):
+    hashes = super(EnsembleLSH, self).forward(input)
+    return self.aggregation_fn(hashes)
+
+
+class RandomSampleEnsembleLSH(MultipleRandomSampledLSH):
+  def __init__(self, **kwargs):
+    super(RandomSampleEnsembleLSH, self).__init__(**kwargs)
+    
+    self.output_length = 1
+
+    self.aggregation : str = kwargs.get("aggregation", "srp")
+
+    self.aggregation_weights = kwargs.get("aggregation_weights",None)
+
+    if not self.aggregation_weights is None:
+      self.aggregation = "custom"
+
+    if self.aggregation == "custom":
+      self.aggregation_fn = lambda x : x @ self.aggregation_weights
+    elif self.aggregation == "srp":   
+      self.scale = kwargs.get("scale", 1.0)
+      self.dist = kwargs.get('dist','unif')
+      if self.dist == 'normal':
+        self.aggregation_weights = nn.Parameter(torch.randn(self.num_components) * self.scale, requires_grad=False)
+      elif self.dist == 'unif':
+        self.aggregation_weights = nn.Parameter((torch.rand(self.num_components) * (self.scale * 2)) - self.scale, requires_grad=False)
+      self.aggregation_fn = lambda x : x @ self.aggregation_weights
+    elif self.aggregation == "mean":
+      self.aggregation_fn = lambda x : torch.mean(x, dim=1)
+    elif self.aggregation == "max":
+      self.aggregation_fn = lambda x : torch.max(x, dim=1)
+    elif self.aggregation == "min":
+      self.aggregation_fn = lambda x : torch.min(x, dim=1)
+    else:
+      raise Exception("Unknown aggregation")
+
+  def forward(self, input : np.array, **kwargs):
+    hashes = super(RandomSampleEnsembleLSH, self).forward(input)
+    return self.aggregation_fn(hashes)  
   
-  
+ 
 class SequentialLSH(LSH):
   
   def __init__(self, *args : LSH):

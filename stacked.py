@@ -25,7 +25,7 @@ class StackedLSH(LSH):
       else:
         n = len(old)
         if self.layers[ct-1].output_length != layer.input_length:
-          new = np.array([layer.hash(old[k - layer.input_length : k-1]) for k in range(layer.input_length,n+1, layer.input_length)])
+          new = np.array([layer.hash(old[k - layer.input_length : k]) for k in range(layer.input_length,n, layer.input_length)])
         else:
           new = np.array([layer.hash(k) for k in old])
       if layer.output_length == 1:
